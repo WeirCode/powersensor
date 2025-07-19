@@ -1,0 +1,391 @@
+{
+  "cpu": {
+    "brand": "13th Gen Intel(R) Core(TM) i7-13700K",
+    "arch": "X86_64",
+    "physical_cores": 16,
+    "logical_cores": 24,
+    "flags": [
+      "3dnowprefetch",
+      "abm",
+      "acpi",
+      "adx",
+      "aes",
+      "aperfmperf",
+      "apic",
+      "arat",
+      "arch_capabilities",
+      "arch_lbr",
+      "arch_perfmon",
+      "art",
+      "avx",
+      "avx2",
+      "avx_vnni",
+      "bmi1",
+      "bmi2",
+      "bts",
+      "clflush",
+      "clflushopt",
+      "clwb",
+      "cmov",
+      "constant_tsc",
+      "cpuid",
+      "cpuid_fault",
+      "cx16",
+      "cx8",
+      "de",
+      "ds_cpl",
+      "dtes64",
+      "dtherm",
+      "dts",
+      "ept",
+      "ept_ad",
+      "erms",
+      "est",
+      "f16c",
+      "flexpriority",
+      "flush_l1d",
+      "fma",
+      "fpu",
+      "fsgsbase",
+      "fsrm",
+      "fxsr",
+      "gfni",
+      "hfi",
+      "ht",
+      "hwp",
+      "hwp_act_window",
+      "hwp_epp",
+      "hwp_notify",
+      "hwp_pkg_req",
+      "ibpb",
+      "ibrs",
+      "ibrs_enhanced",
+      "ibt",
+      "ida",
+      "intel_pt",
+      "invpcid",
+      "lahf_lm",
+      "lm",
+      "mca",
+      "mce",
+      "md_clear",
+      "mmx",
+      "monitor",
+      "movbe",
+      "movdir64b",
+      "movdiri",
+      "msr",
+      "mtrr",
+      "nonstop_tsc",
+      "nopl",
+      "nx",
+      "ospke",
+      "osxsave",
+      "pae",
+      "pat",
+      "pbe",
+      "pcid",
+      "pclmulqdq",
+      "pconfig",
+      "pdcm",
+      "pdpe1gb",
+      "pebs",
+      "pge",
+      "pku",
+      "pln",
+      "pni",
+      "popcnt",
+      "pse",
+      "pse36",
+      "pts",
+      "rdpid",
+      "rdrand",
+      "rdrnd",
+      "rdseed",
+      "rdtscp",
+      "rep_good",
+      "sdbg",
+      "sep",
+      "serialize",
+      "sha",
+      "sha_ni",
+      "smap",
+      "smep",
+      "smx",
+      "split_lock_detect",
+      "ss",
+      "ssbd",
+      "sse",
+      "sse2",
+      "sse4_1",
+      "sse4_2",
+      "ssse3",
+      "stibp",
+      "syscall",
+      "tm",
+      "tm2",
+      "tpr_shadow",
+      "tsc",
+      "tsc_adjust",
+      "tsc_deadline_timer",
+      "tsc_known_freq",
+      "tscdeadline",
+      "umip",
+      "user_shstk",
+      "vaes",
+      "vme",
+      "vmx",
+      "vnmi",
+      "vpclmulqdq",
+      "vpid",
+      "waitpkg",
+      "x2apic",
+      "xgetbv1",
+      "xsave",
+      "xsavec",
+      "xsaveopt",
+      "xsaves",
+      "xtopology",
+      "xtpr"
+    ],
+    "l2_cache_size": 25165824,
+    "l3_cache_size": 31457280
+  },
+  "cpu_stats": {
+    "cores": [
+      {
+        "core": 0,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 1,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 2,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 3,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 4,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 5,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 6,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 7,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 8,
+        "frequency_mhz": 5400.0,
+        "usage_percent": 5.5
+      },
+      {
+        "core": 9,
+        "frequency_mhz": 5384.399,
+        "usage_percent": 0.9
+      },
+      {
+        "core": 10,
+        "frequency_mhz": 5388.96,
+        "usage_percent": 90.1
+      },
+      {
+        "core": 11,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 12,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 13,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 14,
+        "frequency_mhz": 800.0,
+        "usage_percent": 1.8
+      },
+      {
+        "core": 15,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 16,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 17,
+        "frequency_mhz": 800.0,
+        "usage_percent": 1.8
+      },
+      {
+        "core": 18,
+        "frequency_mhz": 4145.453,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 19,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      },
+      {
+        "core": 20,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.9
+      },
+      {
+        "core": 21,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.9
+      },
+      {
+        "core": 22,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.9
+      },
+      {
+        "core": 23,
+        "frequency_mhz": 800.0,
+        "usage_percent": 0.0
+      }
+    ],
+    "temperatures": {
+      "acpitz": [
+        {
+          "label": "",
+          "temp_c": 27.8
+        }
+      ],
+      "nvme": [
+        {
+          "label": "Composite",
+          "temp_c": 38.85
+        },
+        {
+          "label": "Sensor 1",
+          "temp_c": 31.85
+        },
+        {
+          "label": "Sensor 2",
+          "temp_c": 34.85
+        }
+      ],
+      "spd5118": [
+        {
+          "label": "",
+          "temp_c": 29.75
+        },
+        {
+          "label": "",
+          "temp_c": 29.25
+        }
+      ],
+      "iwlwifi_1": [
+        {
+          "label": "",
+          "temp_c": 27.0
+        }
+      ],
+      "coretemp": [
+        {
+          "label": "Package id 0",
+          "temp_c": 40.0
+        },
+        {
+          "label": "Core 8",
+          "temp_c": 34.0
+        },
+        {
+          "label": "Core 12",
+          "temp_c": 35.0
+        },
+        {
+          "label": "Core 16",
+          "temp_c": 36.0
+        },
+        {
+          "label": "Core 0",
+          "temp_c": 33.0
+        },
+        {
+          "label": "Core 20",
+          "temp_c": 40.0
+        },
+        {
+          "label": "Core 24",
+          "temp_c": 31.0
+        },
+        {
+          "label": "Core 28",
+          "temp_c": 36.0
+        },
+        {
+          "label": "Core 32",
+          "temp_c": 35.0
+        },
+        {
+          "label": "Core 33",
+          "temp_c": 35.0
+        },
+        {
+          "label": "Core 34",
+          "temp_c": 35.0
+        },
+        {
+          "label": "Core 35",
+          "temp_c": 35.0
+        },
+        {
+          "label": "Core 36",
+          "temp_c": 37.0
+        },
+        {
+          "label": "Core 37",
+          "temp_c": 37.0
+        },
+        {
+          "label": "Core 38",
+          "temp_c": 37.0
+        },
+        {
+          "label": "Core 39",
+          "temp_c": 37.0
+        },
+        {
+          "label": "Core 4",
+          "temp_c": 37.0
+        }
+      ]
+    }
+  },
+  "features": {
+    "msr": true,
+    "perf": true,
+    "cgroup_version": 2
+  }
+}

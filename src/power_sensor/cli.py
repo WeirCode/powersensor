@@ -1,6 +1,7 @@
 import argparse
 from power_sensor.setup import setup
 from power_sensor.run import run
+from power_sensor.check import check
 import sys
 
 
@@ -12,6 +13,10 @@ def main():
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    #cli check
+    subparsers.add_parser(
+        "check", help="Check if the cli is operating"
+    )
     # Setup command
     subparsers.add_parser(
         "setup", help="Detect system info and save counters to JSON"
@@ -45,5 +50,7 @@ def main():
     elif args.command in {"h", "help"}:
         parser.print_help()
         sys.exit(0)
+    elif args.command == "check":
+        check()
 
 

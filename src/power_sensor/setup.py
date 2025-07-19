@@ -8,26 +8,39 @@ from pathlib import Path
 def setup():
     print("Setup started...")
     print("Detecting Operating System...")
-    os_name = detect_os()
+    try:
+        os_name = detect_os()
+    except Exception as e:
+        print(e,"Could not detect os python platform library may not be connected")
+        return
+
     print(f"Detected OS: {os_name}")
     print("Gathering info")
-    data = {
-        "cpu": get_cpu_info(),
-        "cpu_stats": get_cpu_stats(),
-        "rapl": detect_rapl_sysfs(),
-        "features": {
-            "msr": check_msr_support(),
-            "perf": check_perf_support(),
-            "cgroup_version": get_cgroup_version()
+    try:
+        data = {
+            "cpu": get_cpu_info(),
+            "cpu_stats": get_cpu_stats(),
+#            "rapl": detect_rapl_sysfs(),
+            "features": {
+                "msr": check_msr_support(),
+                "perf": check_perf_support(),
+                "cgroup_version": get_cgroup_version()
+            }
         }
-    }
+    except Exception as e:
+        print(f"Error collecting data {e}")
+        return
     print(data)
-    with open("system_info/info.json", "w") as f:
-        json.dump(data, f, indent=2)
-    print("✅ Collected system info to info.json")
+    
+    try:
+        with open("src/power_sensor/system_info/info.json", "w") as f:
+            json.dump(data, f, indent=2)
+        print("✅ Collected system info to info.json")
+    except:
+        print("Couldn't open file")
     
 def cpu_info():
-    get = cpuinfo.get_cpu_info()
+    info = cpuinfo.get_cpu_info()
     return {
         "brand": info.get("brand_raw"),
         "arch": info.get("arch"),
