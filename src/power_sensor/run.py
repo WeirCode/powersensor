@@ -75,7 +75,7 @@ def sensor_mesure_send(sampling_interval, sensor, target, sock):
     report_json = json.dumps(report)
     send_report(sock, report_json)
 
-if __name__ == "__main__":
+def run():
     if len(sys.argv) == 1:
         print("Precise config file name: ")
         file_name = input()
