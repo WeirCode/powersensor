@@ -1,8 +1,6 @@
 import argparse
 from power_sensor.setup import setup
 from power_sensor.run import run
-from power_sensor.check import check
-import sys
 
 
 def main():
@@ -13,10 +11,6 @@ def main():
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    #cli check
-    subparsers.add_parser(
-        "check", help="Check if the cli is operating"
-    )
     # Setup command
     subparsers.add_parser(
         "setup", help="Detect system info and save counters to JSON"
@@ -32,25 +26,29 @@ def main():
         help="Path to the C/C++ binary to run and monitor",
     )
     run_parser.add_argument(
-        "args",
-        nargs=argparse.REMAINDER,
-        help="Arguments to pass to the program",
+        "--frequency","-f",
+        type=str,
+        default=1000,
+        help="Sampling frequency (miliseconds)",
     )
-
-    # Custom help command: `power_sensor h` or `power_sensor help`
-    help_parser = subparsers.add_parser("h", help="Show help")
-    help_parser = subparsers.add_parser("help", help="Show help")
+    run_parser.add_argument(
+        "--output","-o",
+        type=str,
+        required=True,
+        help="Output JSON file path",
+    )
 
     args = parser.parse_args()
 
     if args.command == "setup":
-        setup()
+        try:
+            setup()
+        except:
+            print("There was an error running the setup")
     elif args.command == "run":
-        run(args.executable, args.args)
-    elif args.command in {"h", "help"}:
-        parser.print_help()
-        sys.exit(0)
-    elif args.command == "check":
-        check()
+        try:
+            run(args.exe,args.frequency)
+        except:
+            print("There was an error running the run command")
 
 

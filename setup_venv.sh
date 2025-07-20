@@ -40,4 +40,5 @@ pip install -e . || {
 }
 
 echo "✅ Virtual environment is ready."
-echo "CLI power_sensor <command> is now ready to use"
+echo "CLI power_sensor is now ready"
+power_sensor -h
