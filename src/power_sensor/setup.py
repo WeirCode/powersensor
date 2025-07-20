@@ -4,6 +4,7 @@ import json
 import psutil
 import cpuinfo
 from pathlib import Path
+import subprocess
 
 def setup():
     print("Setup started...")
@@ -13,32 +14,54 @@ def setup():
     except Exception as e:
         print(e,"Could not detect os python platform library may not be connected")
         return
-
     print(f"Detected OS: {os_name}")
     print("Gathering info")
+    if os_name == "Linux":
+        gatherLinux()
+    elif os_name == "Windows":
+        return
+    elif os_name == "macOS":
+        return
+
+def gatherLinux():
     try:
         data = {
             "cpu": get_cpu_info(),
             "cpu_stats": get_cpu_stats(),
-#            "rapl": detect_rapl_sysfs(),
             "features": {
                 "msr": check_msr_support(),
                 "perf": check_perf_support(),
-                "cgroup_version": get_cgroup_version()
+                "rapl_domains": detect_rapl_domains(),
+                "cgroup_version": get_cgroup_version(),
+                "pmu_events": get_pmu_events()
             }
         }
     except Exception as e:
         print(f"Error collecting data {e}")
         return
     print(data)
-    
     try:
-        with open("src/power_sensor/system_info/info.json", "w") as f:
+        # Use the path relative to the script file location
+        base_dir = Path(__file__).resolve().parent
+        info_path = base_dir / "system_info" / "info.json"
+        info_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(info_path, "w") as f:
             json.dump(data, f, indent=2)
-        print("✅ Collected system info to info.json")
-    except:
-        print("Couldn't open file")
-    
+        print(f"✅ Collected system info to {info_path}")
+    except Exception as e:
+        print(f"Couldn't save file: {e}")
+
+def detect_os():
+    system = platform.system()
+    if system == "Windows":
+        return "Windows"
+    elif system == "Darwin":
+        return "macOS"
+    elif system == "Linux":
+        return "Linux"
+    else:
+        return "Unknown"
+
 def cpu_info():
     info = cpuinfo.get_cpu_info()
     return {
@@ -50,17 +73,39 @@ def cpu_info():
         "l2_cache_size": info.get("l2_cache_size"),
         "l3_cache_size": info.get("l3_cache_size")
     }
-    
-def detect_os():
-    system = platform.system()
-    if system == "Windows":
-        return "Windows"
-    elif system == "Darwin":
-        return "macOS"
-    elif system == "Linux":
-        return "Linux"
-    else:
-        return "Unknown"
+
+def get_pmu_events():
+    base_dir = Path(__file__).resolve().parent
+    info_path = base_dir / "system_info" / "perf_raw.json"
+    info_path.parent.mkdir(parents=True, exist_ok=True)
+    output_file = info_path
+    # Step 1: Run `perf list -j -o <file>`
+    try:
+        subprocess.run(
+            ["perf", "list", "-j", "-o", str(output_file)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except subprocess.CalledProcessError:
+        print("Failed to run `perf list -j`.")
+        return {}
+    # Step 2: Parse the generated JSON
+    try:
+        with open(output_file, "r") as f:
+            events = json.load(f)
+    except Exception as e:
+        print(f"Failed to read or parse {output_file}: {e}")
+        return {}
+    # Step 3: Extract and return {EventName: Encoding} dictionary
+    event_dict = {}
+    for event in events:
+        name = event.get("EventName")
+        encoding = event.get("Encoding")
+        etype = event.get("EventType")
+        if name and encoding and (etype == "Kernel PMU event"):
+            event_dict[name] = encoding
+    return event_dict
 
 def get_cpu_info():
     info = cpuinfo.get_cpu_info()
@@ -95,31 +140,19 @@ def get_cpu_stats():
         "temperatures": temp_data
     }
 
-def detect_rapl_sysfs():
-    domains = {}
+def detect_rapl_domains():
+    domains = []
     powercap_path = Path("/sys/class/powercap/")
     if not powercap_path.exists():
         return domains
     for domain in powercap_path.glob("intel-rapl:*"):
-        domain_info = {}
         name_path = domain / "name"
-        energy_path = domain / "energy_uj"
-        max_energy_path = domain / "max_energy_range_uj"
-        if name_path.exists() and energy_path.exists():
-            domain_name = name_path.read_text().strip()
-            domain_info["energy_uj"] = int(energy_path.read_text())
-            if max_energy_path.exists():
-                domain_info["max_energy_range_uj"] = int(max_energy_path.read_text())
-            subdomains = {}
-            for sub in domain.glob("intel-rapl:*"):
-                subname_path = sub / "name"
-                subenergy_path = sub / "energy_uj"
-                if subname_path.exists() and subenergy_path.exists():
-                    sub_name = subname_path.read_text().strip()
-                    subdomains[sub_name] = int(subenergy_path.read_text())
-            if subdomains:
-                domain_info["subdomains"] = subdomains
-            domains[domain_name] = domain_info
+        if name_path.exists():
+            try:
+                domain_name = name_path.read_text().strip()
+                domains.append(domain_name)
+            except:
+                continue
     return domains
 
 def check_msr_support():
