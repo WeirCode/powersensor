@@ -5,58 +5,43 @@ import os
 from datetime import datetime
 from tempfile import TemporaryDirectory
 from pathlib import Path
+import sys
 
-def run(executable_path, frequency_ms, output_path):
-    frequency_sec = int(frequency_ms) / 1000.0
-    samples = []
-
-    process, cg_path = start_tracked_process(executable_path)
-
+def validate_inputs(executable_path, frequency_ms):
+    if not os.path.exists(executable_path):
+        raise FileNotFoundError(f"Executable '{executable_path}' does not exist.")
+    if not os.access(executable_path, os.X_OK):
+        raise PermissionError(f"File '{executable_path}' is not executable.")
     try:
-        while process.poll() is None:
-            sample = collect_sample(cg_path)
-            samples.append(sample)
-            time.sleep(frequency_sec)
-    finally:
-        process.wait()  # Ensure cleanup
-        if os.path.exists(cg_path):
-            os.rmdir(cg_path)
-
-    # Save results
-    with open(output_path, "w") as f:
-        json.dump(samples, f, indent=2)
+        frequency_ms = int(frequency_ms)
+        if frequency_ms <= 0:
+            raise ValueError("Frequency must be positive")
+    except ValueError:
+        raise ValueError("Frequency must be a positive integer (milliseconds).")
+    return frequency_ms
 
 def start_tracked_process(executable_path):
-    """Start the target program in a new cgroup and return its PID."""
-    with TemporaryDirectory(prefix="power_sensor_") as cg_path:
-        cg_path = Path("/sys/fs/cgroup") / f"power_sensor_{os.getpid()}"
+    cg_name = f"power_sensor_{os.getpid()}"
+    cg_path = Path("/sys/fs/cgroup") / cg_name
+    try:
         os.makedirs(cg_path, exist_ok=True)
-        # Start the process
         process = subprocess.Popen([executable_path])
-        pid = process.pid
-        # Add the PID to the cgroup
-        tasks_file = cg_path / "cgroup.procs"
-        with open(tasks_file, "w") as f:
-            f.write(str(pid))
+        with open(cg_path / "cgroup.procs", "w") as f:
+            f.write(str(process.pid))
         return process, cg_path
+    except PermissionError as e:
+        raise PermissionError("Cannot create or write to cgroup. Try running with sudo.") from e
+    except Exception as e:
+        raise RuntimeError(f"Error starting process or setting up cgroup: {e}") from e
 
-def collect_sample(cg_path):
-    """Return timestamped CPU usage of cgroup and total system."""
-    pids = get_cgroup_pids(cg_path)
-    timestamp = datetime.now().isoformat()
-
-    cgroup_total = sum(read_proc_stat(pid) for pid in pids)
-    system_total = sum(read_proc_stat(pid) for pid in os.listdir("/proc") if pid.isdigit())
-
-    return {
-        "timestamp": timestamp,
-        "cgroup_cpu_ticks": cgroup_total,
-        "system_cpu_ticks": system_total,
-        "num_pids": len(pids),
-    }
+def get_cgroup_pids(cg_path):
+    try:
+        with open(cg_path / "cgroup.procs", "r") as f:
+            return [line.strip() for line in f if line.strip()]
+    except Exception:
+        return []
 
 def read_proc_stat(pid):
-    """Return %CPU from /proc/[pid]/stat."""
     try:
         with open(f"/proc/{pid}/stat", "r") as f:
             stat = f.read().split()
@@ -66,29 +51,45 @@ def read_proc_stat(pid):
     except Exception:
         return 0
 
-def get_cgroup_pids(cg_path):
-    """Return list of PIDs in the cgroup."""
-    tasks_file = cg_path / "cgroup.procs"
+
+def collect_sample(cg_path):
+    timestamp = datetime.now().isoformat()
+    pids = get_cgroup_pids(cg_path)
+    cgroup_total = sum(read_proc_stat(pid) for pid in pids)
+    system_total = sum(
+        read_proc_stat(pid) for pid in os.listdir("/proc") if pid.isdigit()
+    )
+    return {
+        "timestamp": timestamp,
+        "cgroup_cpu_ticks": cgroup_total,
+        "system_cpu_ticks": system_total,
+        "num_pids": len(pids),
+    }
+
+
+def run(executable_path, frequency_ms, output_path):
+    print("Validating input")
+    frequency_ms = validate_inputs(executable_path, frequency_ms)
+    frequency_sec = frequency_ms / 1000.0
+    samples = []
+    print("Starting Process")
+    process, cg_path = start_tracked_process(executable_path)
     try:
-        with open(tasks_file, "r") as f:
-            return [line.strip() for line in f if line.strip()]
-    except FileNotFoundError:
-        return []
-
-
-def start_tracked_process(executable_path):
-    """Start the target program in a new cgroup and return its PID."""
-    with TemporaryDirectory(prefix="power_sensor_") as cg_path:
-        cg_path = Path("/sys/fs/cgroup") / f"power_sensor_{os.getpid()}"
-        os.makedirs(cg_path, exist_ok=True)
-
-        # Start the process
-        process = subprocess.Popen([executable_path])
-        pid = process.pid
-
-        # Add the PID to the cgroup
-        tasks_file = cg_path / "cgroup.procs"
-        with open(tasks_file, "w") as f:
-            f.write(str(pid))
-
-        return process, cg_path
+        while process.poll() is None:
+            samples.append(collect_sample(cg_path))
+            time.sleep(frequency_sec)
+    except KeyboardInterrupt:
+        print("\nMonitoring interrupted by user.")
+    finally:
+        process.wait()
+        try:
+            os.rmdir(cg_path)
+        except Exception:
+            pass  # Ignore cleanup error
+    try:
+        with open(output_path, "w") as f:
+            json.dump(samples, f, indent=2)
+        print(f"\n✅ Output saved to: {output_path}")
+    except Exception as e:
+        print(f"Error saving output: {e}")
+        sys.exit(1)

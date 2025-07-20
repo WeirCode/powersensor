@@ -37,18 +37,17 @@ def main():
         required=True,
         help="Output JSON file path",
     )
-
-    args = parser.parse_args()
-
-    if args.command == "setup":
+    try:
+        args = parser.parse_args()
+    except:
+        print()
+    else:
         try:
-            setup()
-        except:
-            print("There was an error running the setup")
-    elif args.command == "run":
-        try:
-            run(args.exe,args.frequency)
-        except:
-            print("There was an error running the run command")
+            if args.command == "setup":
+                setup()
+            elif args.command == "run":
+                run(args.executable,args.frequency,args.output)
+        except Exception as e:
+            print(f"Error: {e}")
 
 
