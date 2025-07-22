@@ -26,6 +26,7 @@ def setup():
 def gatherLinux():
     try:
         data = {
+            "os": get_os(),
             "cpu": get_cpu_info(),
             "cpu_stats": get_cpu_stats(),
             "features": {
@@ -61,6 +62,21 @@ def detect_os():
         return "Linux"
     else:
         return "Unknown"
+
+def get_os():
+    try:
+        result = subprocess.run(
+            ["uname", "-a"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        os_info = result.stdout.strip().split()
+        return os_info
+    except subprocess.CalledProcessError as e:
+        print("Error collecting OS info", e)
+        return []
 
 def cpu_info():
     info = cpuinfo.get_cpu_info()
