@@ -6,7 +6,7 @@ A Python-based CLI tool to monitor power and performance metrics of a program. I
 
 - Python installed
 
-## 🛠️ Installation (Linux)
+## (Linux)
 
 ### 1. Clone the repository
 
@@ -35,6 +35,7 @@ power_sensor run <executable full path> -f <frequency(ms) default:1000> -o <outp
 - The setup command returns two output files in the system_info folder
 - perf_raw.json
 Example
+```bash
 [
     {
 	"Unit": "cpu_atom",
@@ -45,7 +46,9 @@ Example
     },
     ...
 ]
+```
 - info.json
+```bash
 {
   "os": [
     ],
@@ -75,8 +78,10 @@ Example
   }
   }
 }
+```
 -run command produces output to specified output folder
 Example
+```bash
 [
     {
     "timestamp": "2025-07-23T14:42:36.289273",
@@ -86,6 +91,7 @@ Example
     },
     ...
 ]
+```
 ## Deactivation
 After use, you can deactivate the Python environment:
 ```bash
