@@ -28,11 +28,11 @@ power_sensor setup
 - ❗️Don't run this command with sudo. The command requires sudo but don't run directly it will crash. Run the function below and it reruns correctly with sudo
 - Run the run command this runs the sensor on your target(executable)
 ```bash
-power_sensor run <executable full path> -f <frequency(ms) default:1000> -o <output json path>
+power_sensor run <executable path> -f <frequency(ms) default:1000> -o <output json path>
 ```
-- Example with test file
+- Example with test file from git project base directory(for paths)
 ```bash
-power_sensor run /test/main -f 100 -o output/test.json
+power_sensor run test/main -f 100 -o output/test.json
 ```
 
 ### 4. Output
