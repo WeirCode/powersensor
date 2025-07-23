@@ -30,11 +30,15 @@ power_sensor setup
 ```bash
 power_sensor run <executable full path> -f <frequency(ms) default:1000> -o <output json path>
 ```
+- Example with test file
+```bash
+power_sensor run /test/main -f 100 -o output/test.json
+```
 
 ### 4. Output
 - The setup command returns two output files in the system_info folder
 - perf_raw.json
-Example
+- Example
 ```bash
 [
     {
@@ -80,7 +84,7 @@ Example
 }
 ```
 -run command produces output to specified output folder
-Example
+- Example
 ```bash
 [
     {
