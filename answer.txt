@@ -1,0 +1,65 @@
+Solutions That Will Work
+✅ 1. Run the CLI with the correct interpreter directly
+
+This is the safest and most straightforward fix:
+
+sudo ./sensor_venv/bin/python -m power_sensor run
+
+Or, if your pyproject.toml defines a CLI entry point:
+
+sudo ./sensor_venv/bin/power_sensor run
+
+✅ 2. Make a wrapper script
+
+Create a run_sensor.sh script like this:
+
+#!/bin/bash
+# Runs power_sensor using the virtualenv
+
+VENV="./sensor_venv"
+CMD="$VENV/bin/python -m power_sensor run"
+
+if [[ $EUID -ne 0 ]]; then
+    echo "Re-running with sudo..."
+    exec sudo "$VENV/bin/python" -m power_sensor run "$@"
+else
+    exec $CMD "$@"
+fi
+
+Then use:
+
+./run_sensor.sh
+
+✅ 3. If You Really Want a Global power_sensor Command with Sudo
+
+You must install it system-wide (not just in the venv):
+
+sudo pip install .
+
+⚠️ Warning: This pollutes your system Python.
+
+Better alternative: use a tool like pipx:
+
+pip install --user pipx
+pipx install --editable .
+
+Then the power_sensor command will be globally available for your user, but still not for sudo.
+✅ 4. Use sudo -E + source the venv
+
+If you must use sudo -E, export the virtualenv PATH to your environment:
+
+export PATH="$PWD/sensor_venv/bin:$PATH"
+export VIRTUAL_ENV="$PWD/sensor_venv"
+sudo -E power_sensor run
+
+Still, this is fragile and doesn't always work because sudo resets too much.
+🔍 Confirm What’s Going Wrong
+
+Run:
+
+which power_sensor
+sudo which power_sensor
+
+Also try:
+
+sudo env | grep -i sensor
