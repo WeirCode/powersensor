@@ -1,32 +1,62 @@
 [
   {
-    "timestamp": "2025-07-20T15:52:47.171141",
+    "timestamp": "2025-07-22T11:21:29.879473",
     "cgroup_cpu_ticks": 0,
-    "system_cpu_ticks": 581653,
+    "system_cpu_ticks": 106001,
     "num_pids": 1
   },
   {
-    "timestamp": "2025-07-20T15:52:48.178863",
-    "cgroup_cpu_ticks": 0,
-    "system_cpu_ticks": 581673,
+    "timestamp": "2025-07-22T11:21:30.885477",
+    "cgroup_cpu_ticks": 101,
+    "system_cpu_ticks": 106178,
     "num_pids": 1
   },
   {
-    "timestamp": "2025-07-20T15:52:49.191719",
-    "cgroup_cpu_ticks": 0,
-    "system_cpu_ticks": 581699,
+    "timestamp": "2025-07-22T11:21:31.894595",
+    "cgroup_cpu_ticks": 202,
+    "system_cpu_ticks": 106349,
     "num_pids": 1
   },
   {
-    "timestamp": "2025-07-20T15:52:50.204443",
-    "cgroup_cpu_ticks": 0,
-    "system_cpu_ticks": 581734,
+    "timestamp": "2025-07-22T11:21:32.900483",
+    "cgroup_cpu_ticks": 302,
+    "system_cpu_ticks": 106521,
     "num_pids": 1
   },
   {
-    "timestamp": "2025-07-20T15:52:51.214079",
-    "cgroup_cpu_ticks": 0,
-    "system_cpu_ticks": 581754,
+    "timestamp": "2025-07-22T11:21:33.907617",
+    "cgroup_cpu_ticks": 403,
+    "system_cpu_ticks": 106695,
+    "num_pids": 1
+  },
+  {
+    "timestamp": "2025-07-22T11:21:34.914356",
+    "cgroup_cpu_ticks": 504,
+    "system_cpu_ticks": 106863,
+    "num_pids": 1
+  },
+  {
+    "timestamp": "2025-07-22T11:21:35.920829",
+    "cgroup_cpu_ticks": 604,
+    "system_cpu_ticks": 107031,
+    "num_pids": 1
+  },
+  {
+    "timestamp": "2025-07-22T11:21:36.928294",
+    "cgroup_cpu_ticks": 705,
+    "system_cpu_ticks": 107195,
+    "num_pids": 1
+  },
+  {
+    "timestamp": "2025-07-22T11:21:37.934711",
+    "cgroup_cpu_ticks": 806,
+    "system_cpu_ticks": 107357,
+    "num_pids": 1
+  },
+  {
+    "timestamp": "2025-07-22T11:21:38.941618",
+    "cgroup_cpu_ticks": 906,
+    "system_cpu_ticks": 107533,
     "num_pids": 1
   }
 ]
