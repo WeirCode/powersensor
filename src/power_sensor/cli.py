@@ -1,4 +1,7 @@
 import argparse
+import subprocess
+import os
+import sys
 from power_sensor.setup import setup
 from power_sensor.run import run
 
@@ -46,7 +49,19 @@ def main():
             if args.command == "setup":
                 setup()
             elif args.command == "run":
-                run(args.executable,args.frequency,args.output)
+                if os.geteuid() != 0:
+                    print("RUNNING WITH SUDO")
+                    python_path = sys.executable
+                    cli_entry = os.path.abspath(sys.argv[0])
+                    cmd = [
+                        "sudo", python_path, cli_entry,
+                        "run", args.executable,
+                        "--frequency", str(args.frequency),
+                        "--output", args.output
+                    ]
+                    subprocess.run(cmd)
+                    return
+                run(args.executable, args.frequency, args.output)
         except Exception as e:
             print(f"Error: {e}")
 
