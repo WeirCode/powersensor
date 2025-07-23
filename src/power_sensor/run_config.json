@@ -1,9 +1,0 @@
-{
-    "name":"procfs_sensor",
-    "verbose": true,
-    "frequency":500,
-    "output": {
-    
-    },
-    "target":["firefox_cgroup", "emacs_cgroup","zsh_cgroup", "mongo_cgroup"]
-}
