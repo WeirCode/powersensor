@@ -7,3 +7,4 @@ src/power_sensor.egg-info
 src/power_sensor/system_info/info.json
 src/power_sensor/system_info/perf_raw.json
 test/
+output/
