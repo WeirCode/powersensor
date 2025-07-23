@@ -1,69 +1,93 @@
-# 🔋 Power Sensor CLI
+# Power Sensor
 
-A Python-based CLI tool to monitor power and performance metrics of a program using Linux system data and cgroups. Ideal for researchers, developers, or anyone profiling energy usage.
+A Python-based CLI tool to monitor power and performance metrics of a program. Ideal for researchers, developers, or anyone profiling energy usage.
 
----
+## Prerequisites
 
-## 📦 Features
+- Python installed
 
-- Detects and stores system info (CPU, OS, counters)
-- Runs a target binary in an isolated cgroup
-- Collects timestamped power and CPU usage data
-- Saves output to a structured JSON file
-- Works cleanly within a Python virtual environment
-- Automatically handles sudo elevation
-
----
-
-## 🛠️ Installation
+## 🛠️ Installation (Linux)
 
 ### 1. Clone the repository
 
 ```bash
 git clone https://github.com/yourusername/power_sensor.git
 cd power_sensor
-2. Set up a Python virtual environment
+```
+### 2. Run the virtualenv setup
 
-python3 -m venv sensor_venv
-source sensor_venv/bin/activate
-3. Install dependencies
-
-pip install -r requirements.txt
-⚙️ Setup
-
-Before running, detect your system’s configuration:
-
+```bash
+source setup_venv.sh
+```
+### 3. Run the power_sensor tool 
+- power_sensor {,setup,run} -h/--help
+- Run the setup this saves computer information to a json file and uses it later
+```bash
 power_sensor setup
-🚀 Usage
-Monitor a binary
+```
+- ❗️Don't run this command with sudo. The command requires sudo but don't run directly it will crash. Run the function below and it reruns correctly with sudo
+- Run the run command this runs the sensor on your target(executable)
+```bash
+power_sensor run <executable full path> -f <frequency(ms) default:1000> -o <output json path>
+```
 
-power_sensor run /path/to/your/binary -f 1000 -o output/data.json
-🧪 Example
-
-power_sensor run ./test_program -f 500 -o output/test_run.json
-🔒 Permissions Note
-
-This tool uses:
-
-    /proc, /sys and performance counters
-
-    cgroup v2 for process isolation
-
-As a result, root privileges are needed for accurate monitoring. sudo is invoked automatically by the CLI to re-run the same tool in the correct context.
-📁 Output Format
-
-The output JSON will look like this:
-
+### 4. Output
+- The setup command returns two output files in the system_info folder
+- perf_raw.json
+Example
 [
-  {
-    "timestamp": "2025-07-23T12:00:00.123Z",
-    "power_microwatts": 13890,
-    "cpu_usage": 17.4
-  },
-  ...
+    {
+	"Unit": "cpu_atom",
+	"EventName": "bus-cycles",
+	"EventAlias": "cpu_atom/bus-cycles/",
+	"EventType": "Kernel PMU event",
+	"Encoding": "cpu_atom/event=0x3c,umask=0x1/"
+    },
+    ...
 ]
-🧹 Deactivation & Cleanup
-
+- info.json
+{
+  "os": [
+    ],
+  "cpu": {
+    "brand":,
+    "arch":,
+    "physical_cores":,
+    "logical_cores":,
+    "flags": [
+        ],
+    "l2_cache_size":,
+    "l3_cache_size":
+  },
+  "cpu_stats": {
+    "cores": [
+        ],
+    "temperatures": {
+    }
+  },
+  "features": {
+    "msr": ,
+    "perf": ,
+    "rapl_domains": [
+    ],
+    "cgroup_version":,
+    "pmu_events": {
+  }
+  }
+}
+-run command produces output to specified output folder
+Example
+[
+    {
+    "timestamp": "2025-07-23T14:42:36.289273",
+    "cgroup_cpu_ticks": 1,
+    "system_cpu_ticks": 165445,
+    "num_pids": 1
+    },
+    ...
+]
+## Deactivation
 After use, you can deactivate the Python environment:
-
+```bash
 deactivate
+```
