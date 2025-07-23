@@ -1,10 +1,7 @@
 sensor_venv/
-osquery/
-cmake-3.21.4-linux-x86_64.tar.gz
-osquery-toolchain-1.1.0-x86_64.tar.xz
 src/power_sensor/__pycache__
 src/power_sensor.egg-info
 src/power_sensor/system_info/info.json
 src/power_sensor/system_info/perf_raw.json
 test/
-output/
+output/test.json
