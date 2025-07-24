@@ -12,7 +12,7 @@ A Python-based CLI tool to monitor power and performance metrics of a program. I
 
 ```bash
 git clone https://github.com/yourusername/power_sensor.git
-cd power_sensor
+cd powersensor
 ```
 ### 2. Run the virtualenv setup
 
