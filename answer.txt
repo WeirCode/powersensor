@@ -99,3 +99,12 @@ Would you like:
     DRAM power collection too?
 
 Let’s build it cleanly — hybrid is the way to go 🚀
+
+
+
+
+
+
+systemd.unit -- daemon that runs in background
+active track a directory and listen for a pid to be added (inotify) when pid added start tracking
+perf filter by cgroup

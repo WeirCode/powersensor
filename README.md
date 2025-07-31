@@ -3,8 +3,11 @@
 A Python-based CLI tool to monitor power and performance metrics of a program. Ideal for researchers, developers, or anyone profiling energy usage.
 
 ## Prerequisites
-
-- Python installed
+### Linux
+- Python3 installed with python3-venv,python3-pip
+```bash
+sudo apt install python3 python3-pip python3-venv
+```
 
 ## (Linux)
 

@@ -14,6 +14,12 @@ echo "Checking dependencies..."
 
 check_command python3
 check_command pip
+echo "Checking for python3-venv module..."
+python3 -c "import venv" 2>/dev/null || {
+    echo >&2 "Error: The 'venv' module is missing. You may need to install the python3-venv package."
+    exit 1
+}
+
 
 echo "Creating virtual environment..."
 python3 -m venv sensor_venv || {
